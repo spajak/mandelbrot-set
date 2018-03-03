@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    font-size: 100%;
+    font-family: monospace;
+}
+
+#content {
+    position: relative;
+    cursor: crosshair;
+    color: white;
+    background-color: rgba(48, 48, 48, 1);
+    width: 100%;
+    height: 100%;
+}
+
+#processing {
+    position: fixed;
+    z-index: 1000;
+    text-align: center;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    user-select: none;
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: auto;
+}
+
+#status-bar {
+    pointer-events: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    left: 0;
+    top: 0;
+    right: 0;
+    font-size: 11px;
+    height: 11px;
+    padding: 10px;
+    white-space: nowrap;
+}
+
+#selection {
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    cursor: zoom-in;
+}
+
+#extent-info {
+    float: left;
+}
+
+#summary {
+    float: right;
+}
+
+.select-rect-point {
+    left: 0;
+    top: -14px;
+}
+
+.select-rect-size {
+    left: auto;
+    top: auto;
+    right: 0;
+    bottom: -14px;
+}
