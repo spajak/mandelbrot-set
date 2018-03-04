@@ -183,6 +183,18 @@ class FractalGenerator {
             yield buffer;
         }
     }
+
+    getData() {
+        let buffer = new Uint8ClampedArray(this.width*this.height*4);
+
+        for (let y = 0; y < this.height; ++y) {
+            for (let x = 0; x < this.width; ++x) {
+                buffer.set(this.calculate(x, y), (y*this.width + x)*4);
+            }
+        }
+
+        return buffer;
+    }
 }
 
 exports.MandelbrotSetFormula = MandelbrotSetFormula;

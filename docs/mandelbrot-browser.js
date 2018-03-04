@@ -2,40 +2,6 @@
 ;(function(window, document, history) {
 
     var mandelbrot = require("../mandelbrot-set.js");
-/*
-    var app = (function(window, document) {
-
-        // Drawing canvas
-        this.canvas = document.createElement('canvas');
-        this.canvas.width  = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-
-        // Processing indicator
-        this.processing = document.createElement('div');
-        this.processing.className = 'processing';
-        this.processing.innerHTML = '<p>Rendering...</p>';
-
-        // Status box
-        this.status = document.createElement('div');
-        this.status.className = 'status';
-
-        // Selection rectange
-        this.selection = document.createElement('div');
-        this.selection.className = 'selection';
-
-        this.init = function() {
-            var body = document.getElementsByTagName('body')[0];
-            body.appendChild(this.processing);
-            body.appendChild(this.canvas);
-            body.appendChild(this.status);
-        };
-
-        this.context = function() {
-            this.canvas.getContext('2d');
-        };
-
-    })(window, document);
-*/
 
     function time() {
         return (new Date).getTime();
