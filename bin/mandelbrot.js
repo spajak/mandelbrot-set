@@ -4,7 +4,7 @@ var mandelbrot = require("../mandelbrot-set.js");
 function createImage() {
     return new Promise(resolve => {
         let formula = new mandelbrot.MandelbrotSetFormula({
-            iterations: 2500,
+            iterations: 25,
             radius: 2**16,
             smooth: true
         });
@@ -17,13 +17,10 @@ function createImage() {
             palette: "ultra-fractal-5",
             extent: { x_min: -0.9706332992849847, y_min: -0.3508682328907049, x_max: -0.6304902962206334, y_max: -0.05362614913176711 }
         });
-        let image = Object.create(Jimp.prototype);
-        image.bitmap = {
-            data: mandelbrotSet.getData(),
-            width: mandelbrotSet.width,
-            height: mandelbrotSet.height
-        };
-        resolve(image);
+        let image = new Jimp(mandelbrotSet.width, mandelbrotSet.height, (er, image) => {
+			image.bitmap.data = mandelbrotSet.getData();
+			resolve(image);
+        });
     });
 }
 
