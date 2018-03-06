@@ -4,8 +4,8 @@ var mandelbrot = require("../mandelbrot-set.js");
 function createImage() {
     return new Promise(resolve => {
         let formula = new mandelbrot.JuliaSetFormula({
-            iterations: 250,
-            radius: 2**2,
+            iterations: 2500,
+            radius: 2**8,
             smooth: true
         });
         let mandelbrotSet = new mandelbrot.FractalGenerator({

@@ -11,8 +11,11 @@ class MandelbrotSetFormula
     }
 
     calculate(Cr, Ci) {
-        let Zr = 0, Zi = 0, Tr = 0, Ti = 0;
+        return this.doCalculate(0, 0, Cr, Ci)
+    }
 
+    doCalculate(Zr, Zi, Cr, Ci) {
+        let Tr = Zr*Zr, Ti = Zi*Zi;
         for (let i = 0; i < this.iterations; ++i) {
             Zi = 2*Zr*Zi + Ci;
             Zr = Tr - Ti + Cr;
@@ -39,9 +42,11 @@ MandelbrotSetFormula.extent = {
     y_max:  1.5
 };
 
-class JuliaSetFormula
+class JuliaSetFormula extends MandelbrotSetFormula
 {
     constructor({iterations = 100, radius = 2**4, smooth = true} = {}) {
+        super(iterations, radius, smooth);
+        // tedius repeat, but above does not work as expected
         this.iterations = iterations;
         this.radius = radius;
         this.smooth = smooth;
@@ -49,24 +54,7 @@ class JuliaSetFormula
     }
 
     calculate(Zr, Zi) {
-        let Cr = -0.8, Ci = 0.156, Tr = Zr*Zr, Ti = Zi*Zi;
-
-        for (let i = 0; i < this.iterations; ++i) {
-            Zi = 2*Zr*Zi + Ci;
-            Zr = Tr - Ti + Cr;
-            Tr = Zr*Zr;
-            Ti = Zi*Zi;
-
-            if (Tr + Ti > this.radius) {
-                if (this.smooth) {
-                    return i + 1 - Math.log(Math.log(Math.sqrt(Tr + Ti)))/Math.log(2);
-                } else {
-                    return i;
-                }
-            }
-        }
-
-        return null;
+        return this.doCalculate(Zr, Zi, -0.8, 0.156);
     }
 }
 
