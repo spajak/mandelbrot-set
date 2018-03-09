@@ -210,13 +210,34 @@ exports.palettes = palettes;
         selection.id = 'selection';
         content.appendChild(selection);
 
-        var formulaClass = "MandelbrotSetFormula";
+        var defaultFormula = "MandelbrotSetFormula";
 
-        var defaultExtent = mandelbrot[formulaClass].extent;
+        if (typeof content.dataset.formula !== 'undefined') {
+            let value = content.dataset.formula;
+            if (value in mandelbrot) {
+                defaultFormula = value;
+            }
+        }
+
+        var defaultExtent = mandelbrot[defaultFormula].extent;
 
         var defaultIterations = 100;
 
+        if (typeof content.dataset.iterations !== 'undefined') {
+            let value = parseInt(content.dataset.iterations);
+            if (isFinite(value)) {
+                defaultIterations = value;
+            }
+        }
+
         var defaultRadius = 2**8;
+
+        if (typeof content.dataset.radius !== 'undefined') {
+            let value = parseInt(content.dataset.radius);
+            if (isFinite(value)) {
+                defaultRadius = value;
+            }
+        }
 
         var initialState = (function() {
             let params = decodeURIQuery(window.location.search);
@@ -264,7 +285,7 @@ exports.palettes = palettes;
             return state;
         })();
 
-        var formula = new mandelbrot.MandelbrotSetFormula({
+        var formula = new mandelbrot[defaultFormula]({
             iterations: initialState.iterations,
             radius: initialState.radius,
             smooth: true
@@ -499,8 +520,11 @@ class MandelbrotSetFormula
     }
 
     calculate(Cr, Ci) {
-        let Zr = 0, Zi = 0, Tr = 0, Ti = 0;
+        return this.doCalculate(0, 0, Cr, Ci)
+    }
 
+    doCalculate(Zr, Zi, Cr, Ci) {
+        let Tr = Zr*Zr, Ti = Zi*Zi;
         for (let i = 0; i < this.iterations; ++i) {
             Zi = 2*Zr*Zi + Ci;
             Zr = Tr - Ti + Cr;
@@ -508,8 +532,11 @@ class MandelbrotSetFormula
             Ti = Zi*Zi;
 
             if (Tr + Ti > this.radius) {
-                return i + 1 - Math.log(Math.log(Math.sqrt(Tr + Ti)))/Math.log(2);
-                //return i + 1 - Math.log((Math.log(Tr + Ti)/2)/Math.log(2)) / Math.log(2);
+                if (this.smooth) {
+                    return i + 1 - Math.log(Math.log(Math.sqrt(Tr + Ti)))/Math.log(2);
+                } else {
+                    return i;
+                }
             }
         }
 
@@ -524,25 +551,28 @@ MandelbrotSetFormula.extent = {
     y_max:  1.5
 };
 
-class JuliaSetFormula {
-    calculate(Zr, Zi) {
-        let z = Math.sqrt(Tr + Ti);
-        let smoothValue = Math.exp(-z);
+class JuliaSetFormula extends MandelbrotSetFormula
+{
+    constructor({iterations = 100, radius = 2**4, smooth = true} = {}) {
+        super(iterations, radius, smooth);
+        // tedius repeat, but above does not work as expected
+        this.iterations = iterations;
+        this.radius = radius;
+        this.smooth = smooth;
+        this.defaultExtent = JuliaSetFormula.extent;
+    }
 
-        for (let i = 0; i < this.iterations && z < 30; ++i) {
-            //z = f(z);
-            //smoothcolor += Math.exp(-z);
-        }
+    calculate(Zr, Zi) {
+        return this.doCalculate(Zr, Zi, -0.8, 0.156);
     }
 }
 
 JuliaSetFormula.extent = {
-    x_min: -2.5,
-    x_max:  1.0,
+    x_min: -1.5,
+    x_max:  1.5,
     y_min: -1.5,
     y_max:  1.5
 };
-
 
 class FractalGenerator {
     constructor({
@@ -686,6 +716,7 @@ class FractalGenerator {
 }
 
 exports.MandelbrotSetFormula = MandelbrotSetFormula;
+exports.JuliaSetFormula = JuliaSetFormula;
 exports.FractalGenerator = FractalGenerator;
 
 },{"./colors.js":1}]},{},[2]);

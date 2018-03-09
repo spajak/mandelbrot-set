@@ -91,13 +91,34 @@
         selection.id = 'selection';
         content.appendChild(selection);
 
-        var formulaClass = "MandelbrotSetFormula";
+        var defaultFormula = "MandelbrotSetFormula";
 
-        var defaultExtent = mandelbrot[formulaClass].extent;
+        if (typeof content.dataset.formula !== 'undefined') {
+            let value = content.dataset.formula;
+            if (value in mandelbrot) {
+                defaultFormula = value;
+            }
+        }
+
+        var defaultExtent = mandelbrot[defaultFormula].extent;
 
         var defaultIterations = 100;
 
+        if (typeof content.dataset.iterations !== 'undefined') {
+            let value = parseInt(content.dataset.iterations);
+            if (isFinite(value)) {
+                defaultIterations = value;
+            }
+        }
+
         var defaultRadius = 2**8;
+
+        if (typeof content.dataset.radius !== 'undefined') {
+            let value = parseInt(content.dataset.radius);
+            if (isFinite(value)) {
+                defaultRadius = value;
+            }
+        }
 
         var initialState = (function() {
             let params = decodeURIQuery(window.location.search);
@@ -145,7 +166,7 @@
             return state;
         })();
 
-        var formula = new mandelbrot.MandelbrotSetFormula({
+        var formula = new mandelbrot[defaultFormula]({
             iterations: initialState.iterations,
             radius: initialState.radius,
             smooth: true

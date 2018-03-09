@@ -65,7 +65,6 @@ JuliaSetFormula.extent = {
     y_max:  1.5
 };
 
-
 class FractalGenerator {
     constructor({
         width = 2000,
