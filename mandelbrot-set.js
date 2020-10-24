@@ -1,7 +1,6 @@
+import * as colors from "./colors.js";
 
-var colors = require("./colors.js");
-
-class MandelbrotSetFormula
+export class MandelbrotSetFormula
 {
     constructor({iterations = 100, radius = 2**4, smooth = true} = {}) {
         this.iterations = iterations;
@@ -11,7 +10,7 @@ class MandelbrotSetFormula
     }
 
     calculate(Cr, Ci) {
-        return this.doCalculate(0, 0, Cr, Ci)
+        return this.doCalculate(0, 0, Cr, Ci);
     }
 
     doCalculate(Zr, Zi, Cr, Ci) {
@@ -42,7 +41,7 @@ MandelbrotSetFormula.extent = {
     y_max:  1.5
 };
 
-class JuliaSetFormula extends MandelbrotSetFormula
+export class JuliaSetFormula extends MandelbrotSetFormula
 {
     constructor({iterations = 100, radius = 2**4, smooth = true} = {}) {
         super(iterations, radius, smooth);
@@ -65,7 +64,7 @@ JuliaSetFormula.extent = {
     y_max:  1.5
 };
 
-class FractalGenerator {
+export class FractalGenerator {
     constructor({
         width = 2000,
         height = 2000,
@@ -119,8 +118,8 @@ class FractalGenerator {
             let d = (this.width * this.step - width) / 2;
             this.x_min = this.extent.x_min - d;
             this.x_max = this.extent.x_max + d;
-            this.y_min = this.extent.y_min
-            this.y_max = this.extent.y_max
+            this.y_min = this.extent.y_min;
+            this.y_max = this.extent.y_max;
         } else {
             this.step = x_step;
             let d = (this.height * this.step - height) / 2;
@@ -205,7 +204,3 @@ class FractalGenerator {
         return buffer;
     }
 }
-
-exports.MandelbrotSetFormula = MandelbrotSetFormula;
-exports.JuliaSetFormula = JuliaSetFormula;
-exports.FractalGenerator = FractalGenerator;

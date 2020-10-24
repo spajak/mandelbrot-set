@@ -1,29 +1,30 @@
 {
-  "name": "mandelbrot-set",
-  "version": "1.0.0",
-  "description": "See demo [Mandelbrot set](https://spajak.github.io/mandelbrot-set)",
-  "main": "mandelbrot-set.js",
-  "bin": {
-    "mandelbrot-set": "mandelbrot.js"
-  },
-  "directories": {
-    "doc": "docs"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/spajak/mandelbrot-set.git"
-  },
-  "keywords": [],
-  "author": "Sebastian Pająk <spconv@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/spajak/mandelbrot-set/issues"
-  },
-  "homepage": "https://github.com/spajak/mandelbrot-set#readme",
-  "dependencies": {
-    "jimp": "^0.2.28"
-  }
+    "name": "mandelbrot-set",
+    "version": "1.0.1",
+    "description": "The Mandelbrot set and Julia set formulas and fractals generator",
+    "type": "module",
+    "main": "./mandelbrot-set.js",
+    "exports": "./mandelbrot-set.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/spajak/mandelbrot-set.git"
+    },
+    "keywords": [
+        "mandelbrot",
+        "fractal",
+        "mandelbrot set",
+        "julia set"
+    ],
+    "author": "Sebastian Pająk <spconv@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/spajak/mandelbrot-set/issues"
+    },
+    "homepage": "https://github.com/spajak/mandelbrot-set",
+    "devDependencies": {
+        "browserify": "^17.0.0",
+        "browser-resolve": "^2.0.0",
+        "esmify": "^2.1.1",
+        "jimp": "^0.16.1"
+    }
 }

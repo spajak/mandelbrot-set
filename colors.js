@@ -109,8 +109,4 @@ function interpolate(color1, color2, fraction) {
     ]);
 }
 
-
-exports.HSL2RGB = HSL2RGB;
-exports.HSV2RGB = HSV2RGB;
-exports.interpolate = interpolate;
-exports.palettes = palettes;
+export {HSL2RGB, HSV2RGB, interpolate, palettes};

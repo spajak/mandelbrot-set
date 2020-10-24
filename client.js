@@ -1,10 +1,10 @@
 
 ;(function(window, document, history) {
 
-    var mandelbrot = require("../mandelbrot-set.js");
+    var mandelbrot = require("./mandelbrot-set.js");
 
     function time() {
-        return (new Date).getTime();
+        return (new Date()).getTime();
     }
 
     function encodeURIQuery(params) {
@@ -64,10 +64,12 @@
 
     document.addEventListener("DOMContentLoaded", function(event) {
 
+        var body = document.getElementsByTagName('body')[0];
         var processing = document.createElement("div");
         processing.id = 'processing';
+        processing.style.top = '0';
         processing.style.display = 'none';
-        document.getElementsByTagName('body')[0].appendChild(processing);
+        body.appendChild(processing);
 
         var content = document.getElementById('content');
         var canvas = document.createElement('canvas');
@@ -136,14 +138,14 @@
             let iterations = null, radius = null;
 
             if ('iterations' in params) {
-                let value = parseInt(params['iterations']);
+                let value = parseInt(params.iterations);
                 if (isFinite(value)) {
                     iterations = value;
                 }
             }
 
             if ('radius' in params) {
-                let value = parseInt(params['radius']);
+                let value = parseInt(params.radius);
                 if (isFinite(value)) {
                     radius = value;
                 }
@@ -208,7 +210,7 @@
                     selection.style.display = 'none';
                     selection.style.pointerEvents = 'none';
                     processing.style.display = 'block';
-                    processing.style.top = statusBar.offsetHeight;
+                    processing.style.top = statusBar.offsetHeight + 'px';
                     summary.innerHTML = `iterations: ${formula.iterations}, radius: ${formula.radius}`;
 
                     this.started = time();
@@ -223,7 +225,7 @@
                 let result = this.generator.next();
                 if (!result.done) {
                     this.context.putImageData(new ImageData(result.value, fractal.width, 1), 0, this.currentLine++);
-                    processing.style.top = Math.max(this.currentLine, statusBar.offsetHeight);
+                    processing.style.top = Math.max(this.currentLine, statusBar.offsetHeight) + 'px';
                     if (0 == this.currentLine % 25) {
                         this.timeout = setTimeout(() => { this.drawNextLine(); }, 0);
                     } else {
@@ -250,7 +252,7 @@
             fractal.setExtent(newState.extent);
 
             return newState;
-        };
+        }
 
         function pushState(state = {}) {
             state = setState(state);
@@ -259,7 +261,7 @@
             }
 
             history.pushState(state, "", "?" + encodeURIQuery(state));
-        };
+        }
 
         function calculateZoom(extent) {
             return Math.max(
@@ -268,7 +270,7 @@
                 (defaultExtent.y_max - defaultExtent.y_min) /
                 (extent.y_max - extent.y_min)
             );
-        };
+        }
 
         function calculateExtent() {
             let [x_min, y_min] = fractal.getExtentValueAt(
@@ -281,21 +283,21 @@
             );
 
             return {x_min, x_max, y_min, y_max};
-        };
+        }
 
         function calculateIterations(zoom) {
             return Math.min(10000, Math.floor(defaultIterations * Math.max(1,
                 Math.log2(zoom+1)
             )));
-        };
+        }
 
         function calculateRadius(zoom) {
             return defaultRadius;
-        };
+        }
 
         window.addEventListener('popstate', function(e) {
             if (e.state) {
-                setState(e.state)
+                setState(e.state);
                 drawing.draw();
             }
         });
@@ -324,10 +326,12 @@
 
         canvas.addEventListener('mousedown', function(e) {
             if (!drag.enabled) {
-                selection.style.left = drag.xs = drag.x = e.pageX;
-                selection.style.top = drag.ys = drag.y = e.pageY;
-                selection.style.width = 0;
-                selection.style.height = 0;
+                drag.xs = drag.x = e.pageX;
+                selection.style.left = drag.xs + 'px';
+                drag.ys = drag.y = e.pageY;
+                selection.style.top = drag.ys + 'px';
+                selection.style.width = '0';
+                selection.style.height = '0';
 
                 selection.style.display = 'none';
                 selection.style.pointerEvents = 'none';
@@ -344,10 +348,10 @@
                 selection.style.display = 'block';
                 selection.style.pointerEvents = 'none';
 
-                selection.style.left = Math.min(drag.xs, drag.x);
-                selection.style.top = Math.min(drag.ys, drag.y);
-                selection.style.width = Math.abs(drag.xs - drag.x);
-                selection.style.height = Math.abs(drag.ys - drag.y);
+                selection.style.left = Math.min(drag.xs, drag.x) + 'px';
+                selection.style.top = Math.min(drag.ys, drag.y) + 'px';
+                selection.style.width = Math.abs(drag.xs - drag.x) + 'px';
+                selection.style.height = Math.abs(drag.ys - drag.y) + 'px';
 
                 let extent = calculateExtent();
                 extentInfo.innerHTML = `${extent.x_min}, ${extent.y_min}; ${extent.x_max}, ${extent.y_max}`;
